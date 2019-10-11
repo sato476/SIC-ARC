@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <div role="main">
+      <p><%= content %></p>
+    <form action="/" method="POST">
+      <p><table>
+        <tr>
+          <th>ユーザーID：</th>
+          <td><input type="text" name="name" value="" ></td>
+        </tr>
+        <tr>
+          <th>パスワード：</th>
+          <td><input type="password" name="password" value=""></td>
+        </tr>
+      </table></p>
+      <input type="submit" value="ログイン">
+    </form>
+  </div>
+  </body>
+</html>
