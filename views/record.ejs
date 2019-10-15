@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head><% title %></head>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <body>
+        <form action="">
+            <p>日付　<input type="date" name='date' value=""></p>
+            <p>
+                出勤時間　<input type="time" name='att_time' value="9:00">
+                退勤時間　<input type="time" name='leave_time' value="17:45">
+                休憩時間　<input type="time" name='rest_time' value="1:00">
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="1" rowspan="2">プロジェクトコード</td>
+                        <td colspan="1" rowspan="2">作業内容</td>
+                        <td colspan="2" rowspan="1">作業時間</td>
+                        <td colspan="1" rowspan="2">勤務時間合計</td>
+                    </tr>
+                    <tr>
+                        <td>開始時間</td>
+                        <td>終了時間</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>
+
+<!-- 行の増減に関するコード
+<table>
+        <tbody id="listOperation">
+          <tr>
+            <td>1</td>
+            <td>
+              <input type="button" value="－" onClick="deleteList(this)">
+              <input type="button" value="＋" onClick="addList(this)">
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+      
