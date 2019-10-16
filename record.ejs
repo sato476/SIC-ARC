@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head><% title %></head>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script type="text/javascript">
+
+// 行を追加時の動作
+function addlist() {
+        const obj = document.getElementById("list");
+        let count = obj.rows.length;
+        const row = obj.insertRow(count-1);
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        cell1.innerHTML = '<td><input type="text" name="project_code" value=""></td>'
+        cell2.innerHTML = '<td><input type="text" name="work_content" value=""></td>'
+        cell3.innerHTML = '<td><input type="time" name="att_time" value=""></td>'
+        cell4.innerHTML = '<td><input type="time" name="leave_time" value=""></td>'
+}
+</script>
+    <body>
+        <form action="">
+            <p>日付　<input type="date" name='date' value=""></p>
+            <p>
+                出勤時間　<input type="time" name='AttTime' value="09:00">
+                退勤時間　<input type="time" name='LeaveTime' value="17:45">
+                休憩時間　<input type="time" name='RestTime' value="01:00">
+            </p>
+            <table border="1" id="list">
+                <thead align="center">
+                    <tr>
+                        <td colspan="1" rowspan="2">プロジェクトコード</td>
+                        <td colspan="1" rowspan="2">作業内容</td>
+                        <td colspan="2" rowspan="1">作業時間</td>
+                        <!-- 勤務時間の実装は要検討 
+                        <td colspan="1" rowspan="2">勤務時間合計</td> -->
+                    </tr>
+                    <tr>
+                        <td>開始時間</td>
+                        <td>終了時間</td>
+                    </tr>
+                </thead>
+                <tbody id="listOperation">
+                    <tr>　
+                      <td><input type="text" name="project_code" value=""></td>
+                      <td><input type="text" name="work_content" value=""></td>
+                      <td><input type="time" name="att_time" value=""></td>
+                      <td><input type="time" name="leave_time" value=""></td>
+                    </tr>
+                    <div id="addlist"></div>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>
+                        <div><input type="button" value="行を追加" id="add" onclick="addlist()"></div>
+                        </td>
+                        <td><input type="submit" value="登録"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </body>
+</html>
