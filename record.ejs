@@ -4,23 +4,50 @@
     <link rel="stylesheet" href="stylesheets/style.css">
     <script type="text/javascript">
 
+
+// 登録情報に番号を付与
+let num = 2;
+
 // 行を追加時の動作
 function addlist() {
-        const obj = document.getElementById("list");
-        let count = obj.rows.length;
-        const row = obj.insertRow(count-1);
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
-        cell1.innerHTML = '<td><input type="text" name="project_code" value=""></td>'
-        cell2.innerHTML = '<td><input type="text" name="work_content" value=""></td>'
-        cell3.innerHTML = '<td><input type="time" name="att_time" value=""></td>'
-        cell4.innerHTML = '<td><input type="time" name="leave_time" value=""></td>'
+    ++num
+    // const obj = document.getElementById("list");
+    // console.log(obj);
+    // console.log(obj.rows);
+    const obj = document.getElementById("listOperation");
+    let count = obj.rows.length;
+    // console.log(count)
+    //const row = obj.insertRow(count-1);
+    const row = obj.insertRow(count);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
+    let cell4 = row.insertCell(3);
+    let cell5 = row.insertCell(4);
+    cell1.innerHTML = '<td><input type="text" id="project_" name="project_code" value=""></td>'
+    cell2.innerHTML = '<td><input type="text" id="work_" name="work_content" value=""></td>'
+    cell3.innerHTML = '<td><input type="time" id="att_" name="att_time" value=""></td>'
+    cell4.innerHTML = '<td><input type="time" id="leave_" name="leave_time" value=""></td>'
+    cell5.innerHTML = '<td><input type="button" value="×" id="num" name="delete" onclick="deletelist(this)"></td>'
 }
+
+// 行を削除時の動作
+function deletelist(ele){
+    var object = document.getElementById("listOperation")
+    // var obj = document.getElementById("num");
+    // obj=<input type="button" value="×" id="num" name="delete" onclick="deletelist()">
+    // console.log(ele);
+    var tr = ele.parentNode.parentNode;
+    // tr = <tr><td>obj</td></tr>
+    console.log(tr);
+    // object.deleteRow(tr);
+    object.removeChild(tr);
+}
+
+
 </script>
     <body>
-        <form action="">
+        <form action="/record" method="POST">
             <p>日付　<input type="date" name='date' value=""></p>
             <p>
                 出勤時間　<input type="time" name='AttTime' value="09:00">
@@ -33,6 +60,7 @@ function addlist() {
                         <td colspan="1" rowspan="2">プロジェクトコード</td>
                         <td colspan="1" rowspan="2">作業内容</td>
                         <td colspan="2" rowspan="1">作業時間</td>
+                        <td colspan="1" rowspan="2"></td>
                         <!-- 勤務時間の実装は要検討 
                         <td colspan="1" rowspan="2">勤務時間合計</td> -->
                     </tr>
@@ -42,21 +70,22 @@ function addlist() {
                     </tr>
                 </thead>
                 <tbody id="listOperation">
-                    <tr>　
-                      <td><input type="text" name="project_code" value=""></td>
-                      <td><input type="text" name="work_content" value=""></td>
-                      <td><input type="time" name="att_time" value=""></td>
-                      <td><input type="time" name="leave_time" value=""></td>
+                    <tr>
+                      <td><input type="text" id="project_" name="project_code" value=""></td>
+                      <td><input type="text" id="work_" name="work_content" value=""></td>
+                      <td><input type="time" id="att_" name="att_time" value=""></td>
+                      <td><input type="time" id="leave_" name="leave_time" value=""></td>
+                      <td><input type="button" value="×" id="num" name="delete" onclick="deletelist(this)"></td>
                     </tr>
-                    <div id="addlist"></div>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="2"></td>
                         <td>
-                        <div><input type="button" value="行を追加" id="add" onclick="addlist()"></div>
+                            <input type="button" value="行を追加"" id="add" onclick="addlist()">   
                         </td>
                         <td><input type="submit" value="登録"></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>
