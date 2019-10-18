@@ -55,4 +55,9 @@ router.post('/',function( req, res, next ){
   });
 });
 
+function addlist() {
+  console.log("2")
+}
+
+
 module.exports = router;
