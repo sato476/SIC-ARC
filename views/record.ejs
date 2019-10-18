@@ -2,45 +2,93 @@
 <html>
     <head><% title %></head>
     <link rel="stylesheet" href="stylesheets/style.css">
+    <script type="text/javascript">
+
+
+// 登録情報に番号を付与
+let num = 2;
+
+// 行を追加時の動作
+function addlist() {
+    ++num
+    // const obj = document.getElementById("list");
+    // console.log(obj);
+    // console.log(obj.rows);
+    const obj = document.getElementById("listOperation");
+    let count = obj.rows.length;
+    // console.log(count)
+    //const row = obj.insertRow(count-1);
+    const row = obj.insertRow(count);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
+    let cell4 = row.insertCell(3);
+    let cell5 = row.insertCell(4);
+    cell1.innerHTML = '<td><input type="text" id="project_" name="project_code" value=""></td>'
+    cell2.innerHTML = '<td><input type="text" id="work_" name="work_content" value=""></td>'
+    cell3.innerHTML = '<td><input type="time" id="att_" name="att_time" value=""></td>'
+    cell4.innerHTML = '<td><input type="time" id="leave_" name="leave_time" value=""></td>'
+    cell5.innerHTML = '<td><input type="button" value="×" id="num" name="delete" onclick="deletelist(this)"></td>'
+}
+
+// 行を削除時の動作
+function deletelist(ele){
+    var object = document.getElementById("listOperation")
+    // var obj = document.getElementById("num");
+    // obj=<input type="button" value="×" id="num" name="delete" onclick="deletelist()">
+    // console.log(ele);
+    var tr = ele.parentNode.parentNode;
+    // tr = <tr><td>obj</td></tr>
+    console.log(tr);
+    // object.deleteRow(tr);
+    object.removeChild(tr);
+}
+
+
+</script>
     <body>
-        <form action="">
+        <form action="/record" method="POST">
             <p>日付　<input type="date" name='date' value=""></p>
             <p>
-                出勤時間　<input type="time" name='att_time' value="9:00">
-                退勤時間　<input type="time" name='leave_time' value="17:45">
-                休憩時間　<input type="time" name='rest_time' value="1:00">
+                出勤時間　<input type="time" name='AttTime' value="09:00">
+                退勤時間　<input type="time" name='LeaveTime' value="17:45">
+                休憩時間　<input type="time" name='RestTime' value="01:00">
             </p>
-            <table>
-                <thead>
+            <table border="1" id="list">
+                <thead align="center">
                     <tr>
                         <td colspan="1" rowspan="2">プロジェクトコード</td>
                         <td colspan="1" rowspan="2">作業内容</td>
                         <td colspan="2" rowspan="1">作業時間</td>
-                        <td colspan="1" rowspan="2">勤務時間合計</td>
+                        <td colspan="1" rowspan="2"></td>
+                        <!-- 勤務時間の実装は要検討 
+                        <td colspan="1" rowspan="2">勤務時間合計</td> -->
                     </tr>
                     <tr>
                         <td>開始時間</td>
                         <td>終了時間</td>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr></tr>
+                <tbody id="listOperation">
+                    <tr>
+                      <td><input type="text" id="project_" name="project_code" value=""></td>
+                      <td><input type="text" id="work_" name="work_content" value=""></td>
+                      <td><input type="time" id="att_" name="att_time" value=""></td>
+                      <td><input type="time" id="leave_" name="leave_time" value=""></td>
+                      <td><input type="button" value="×" id="num" name="delete" onclick="deletelist(this)"></td>
+                    </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>
+                            <input type="button" value="行を追加"" id="add" onclick="addlist()">   
+                        </td>
+                        <td><input type="submit" value="登録"></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </table>
         </form>
     </body>
 </html>
-
-<!-- 行の増減に関するコード
-<table>
-        <tbody id="listOperation">
-          <tr>
-            <td>1</td>
-            <td>
-              <input type="button" value="－" onClick="deleteList(this)">
-              <input type="button" value="＋" onClick="addList(this)">
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
-      
