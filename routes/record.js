@@ -28,7 +28,7 @@ router.post( '/', async function(req, res ,next){
   let query = [];
   let p =req.body.project_code.length 
   
-  if(!p.isArray){
+  if(!Array.isArray(p)){
     p=1
   }
   console.log(p)
