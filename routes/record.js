@@ -15,7 +15,7 @@ pool.connect();
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   if( req.session.login == null ){
-    res.redirect('/');
+    res.redirect('http://localhost:3000/');
   }
   res.render('record', {
     title: '工数勤怠　登録'
@@ -26,8 +26,13 @@ router.post( '/', async function(req, res ,next){
   // 勤務時間の計算方法の追加が必須
   let i = 0
   let query = [];
-
-  for(i ; i < req.body.project_code.length ; i++){
+  let p =req.body.project_code.length 
+  
+  if(!p.isArray){
+    p=1
+  }
+  console.log(p)
+  for(i ; i < p ; i++){
 
     query = {
       text: 'INSERT INTO time_dt(id, date, att_time, leave_time, rest_time, product_code, work_content, work_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
