@@ -5,12 +5,12 @@
     <script type="text/javascript">
 
 
-// 登録情報に番号を付与
-let num = 2;
+// 増減の回数を記録
+let num = 0;
 
 // 行を追加時の動作
 function addlist() {
-    ++num
+    ++num;
     // const obj = document.getElementById("list");
     // console.log(obj);
     // console.log(obj.rows);
@@ -33,14 +33,10 @@ function addlist() {
 
 // 行を削除時の動作
 function deletelist(ele){
+    --num;
     var object = document.getElementById("listOperation")
-    // var obj = document.getElementById("num");
-    // obj=<input type="button" value="×" id="num" name="delete" onclick="deletelist()">
-    // console.log(ele);
     var tr = ele.parentNode.parentNode;
-    // tr = <tr><td>obj</td></tr>
     console.log(tr);
-    // object.deleteRow(tr);
     object.removeChild(tr);
 }
 
@@ -82,7 +78,7 @@ function deletelist(ele){
                     <tr>
                         <td colspan="2"></td>
                         <td>
-                            <input type="button" value="行を追加"" id="add" onclick="addlist()">   
+                            <input type="button" value="行を追加" id="add" onclick="addlist()">   
                         </td>
                         <td><input type="submit" value="登録"></td>
                         <td></td>
@@ -90,5 +86,7 @@ function deletelist(ele){
                 </tfoot>
             </table>
         </form>
+        <h3><a href="/kakunin">勤怠/工数　確認</a></h3>
+        <h3><a href="/">ログアウト</a></h3>
     </body>
 </html>

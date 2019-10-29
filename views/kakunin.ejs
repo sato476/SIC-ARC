@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel="stylesheet" href="stylesheets/style.css">
+    </head>
+    <body>
+        <head><h1><%= title %></h1></head>
+        <table border="1" id="list">
+            <thead>
+                <tr>
+                    <td>日付</td>
+                    <td>出勤時間</td>
+                    <td>退勤時間</td>
+                    <td>休憩時間</td>
+                    <td>プロジェクトコード</td>
+                    <td>作業内容</td>
+                    <td>勤務時間</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <% for( let i in content){ %>               
+                <tr>
+                    <td><%= content[i].date %></td>
+                    <td><%= content[i].att_time %></td>
+                    <td><%= content[i].leave_time %></td>
+                    <td><%= content[i].rest_time %></td>
+                    <td><%= content[i].product_code %></td>
+                    <td><%= content[i].work_content %></td>
+                    <td><%= content[i].work_time %></td>
+                </tr>
+                <% } %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">勤務時間合計</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+        <div role="main"></div>
+        <h3><a href="/record">勤怠/工数　登録</a></h3>
+        <h3><a href="/">ログアウト</a></h3>
+    </body>
+</html>
