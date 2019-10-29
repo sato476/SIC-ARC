@@ -42,7 +42,7 @@ router.post('/',function( req, res, next ){
             content: '名前とパスワードが一致しません'
           })
         } else {
-          request.session.login = 'id';
+          request.session.login = model.rows[0].id;
           res.render('home', {
             title: '勤怠管理システム',
             content:model.rows[0].name + 'でログイン',
