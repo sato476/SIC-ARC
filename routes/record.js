@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 router.post( '/', async function(req, res ,next){
   let i = 0
   let query = [];
-  let p =req.body.project_code.length 
+  let p =req.body.project_code 
 
   
   // 勤務時間計算
