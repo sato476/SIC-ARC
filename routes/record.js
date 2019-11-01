@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const pg = require('pg');
-
 const pool = pg.Pool({
   database: 'testdb',
   user: 'postgres', 
@@ -9,7 +8,6 @@ const pool = pg.Pool({
   host: 'localhost',
   port: 5432,
 });
-
 pool.connect();
 
 /* GET users listing. */
@@ -23,11 +21,73 @@ router.get('/', function(req, res, next) {
 });
 
 router.post( '/', async function(req, res ,next){
-  // 勤務時間の計算方法の追加が必須
   let i = 0
   let query = [];
   let p =req.body.project_code.length 
+
   
+  // 勤務時間計算
+  let hour ;
+  let min ;
+  let total = '';
+  let R = '';
+  let I = '';
+  let O = '';
+  let time = '';
+
+  // 調整が必要 =>get,setか、ちょうどよい日付を見つけるか。
+  let LT = req.body.LeaveTime.split(':');
+  O = new Date('','','',LT[0],LT[1]);
+
+  let ST = req.body.AttTime.split(':');
+  I = new Date('','','',ST[0],ST[1]);
+
+  let RT = req.body.RestTime.split(':');
+  R = new Date('','','',RT[0],RT[1]);
+
+  console.log('O: ' + O)
+  console.log('I: ' + I)
+
+// 日付をまたいで作業をした場合の処理
+if(O < I){
+  LT[0] = Number(LT[0]) + 24;
+  O = new Date('','','',LT[0],LT[1]);
+  console.log('if O: ' + O)
+}
+
+  time = O - I
+
+  for(hour = 0;time >= 1000*60*60;hour++){
+    time = time - 1000*60*60;
+  }
+  for(min = 0;time >= 1000*60;min++){
+    time = time - 1000*60;
+  }
+
+  total = hour + ':' + min
+
+  // O = new Date(d[0],d[1],d[2],hour,min)
+  O = new Date('','','',hour,min)
+
+  console.log('O: ' + O);
+  console.log('R: ' + R);
+
+  time = O - R
+
+  for(hour = 0;time >= 1000*60*60;hour++){
+    time = time - 1000*60*60;
+  }
+  for(min = 0;time >= 1000*60;min++){
+    time = time - 1000*60;
+  }
+
+  total = hour + ':' + min
+
+  console.log('time2: ' + time)
+  console.log('total2: ' + total)
+  
+
+  // 単一行と複数行の登録
   if(!Array.isArray(p)){
     p=1
   }
@@ -44,7 +104,7 @@ router.post( '/', async function(req, res ,next){
                 req.body.project_code[i], 
                 req.body.work_content[i], 
                 // date,
-                '8:00'
+                total
               ],
     }
     await pool.query(query,  function (err, res) {
@@ -53,6 +113,7 @@ router.post( '/', async function(req, res ,next){
       }   
     })
   }
+
   let test = {
     text: 'select * from time_dt',
   }
