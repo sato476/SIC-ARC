@@ -27,6 +27,7 @@ router.post( '/', async function(req, res ,next){
 
   
   // 勤務時間計算
+  // 初めに出勤時間と退勤時間と休憩時間から労働時間の算出
   let hour ;
   let min ;
   let total = '';
@@ -35,9 +36,8 @@ router.post( '/', async function(req, res ,next){
   let O = '';
   let time = '';
 
-  // 調整が必要 =>get,setか、ちょうどよい日付を見つけるか。
-  let LT = req.body.LeaveTime.split(':');
-  O = new Date('','','',LT[0],LT[1]);
+  let FT = req.body.LeaveTime.split(':');
+  O = new Date('','','',FT[0],FT[1]);
 
   let ST = req.body.AttTime.split(':');
   I = new Date('','','',ST[0],ST[1]);
@@ -50,8 +50,8 @@ router.post( '/', async function(req, res ,next){
 
 // 日付をまたいで作業をした場合の処理
 if(O < I){
-  LT[0] = Number(LT[0]) + 24;
-  O = new Date('','','',LT[0],LT[1]);
+  FT[0] = Number(FT[0]) + 24;
+  O = new Date('','','',FT[0],FT[1]);
   console.log('if O: ' + O)
 }
 
@@ -85,14 +85,59 @@ if(O < I){
 
   console.log('time2: ' + time)
   console.log('total2: ' + total)
+  // ここまでが労働時間の計算
+
+  // 工数ごとの開始時間と狩猟時間の算出
+
   
+  let LT = req.body.leave_time
+  let AT = req.body.att_time
+  let Ltime = [];
+  let totaltime = [];
+  let timesum = 0;
+
+  // 行ごとの作業時間を求めるまで繰り返す
+  for(let num = 0; num<LT.length;num++ ){
+  
+  // 行ごとの時間と分を各変数に格納
+  Ltime = LT[num].split(':');
+  Atime = AT[num].split(':');
+
+  Ltime[num] = new Date('','','',Ltime[0],Ltime[1]);
+  Atime[num] = new Date('','','',Atime[0],Atime[1]);
+  totaltime[num] = Ltime[num] - Atime[num];
+  
+  timesum = timesum + totaltime[num]
+
+  for(hour = 0;totaltime[num] >= 1000*60*60;hour++){
+    totaltime[num] = totaltime[num] - 1000*60*60;
+  }
+  for(min = 0;totaltime[num] >= 1000*60;min++){
+    totaltime[num] = totaltime[num] - 1000*60;
+  }
+  totaltime[num] = hour + ':' + min;
+  }
+
+  //労働時間比較用変数 
+    // for(hour = 0;timesum >= 1000*60*60;hour++){
+    //   hour = timesum - 1000*60*60;
+    // }
+    // for(min = 0;timesum >= 1000*60;min++){
+    //   min = timesum - 1000*60;
+    // }
+    // timesum = hour + ':' + min;
+
+  console.log('Ltime: ' + Ltime);
+  console.log('Atime: ' + Atime);
+  console.log('totaltime: ' + totaltime);
+  console.log('timesum: ' + timesum)
 
   // 単一行と複数行の登録
   if(!Array.isArray(p)){
     p=1
   }
   console.log(p)
-  for(i ; i < p ; i++){
+  for(i ; i < p.length ; i++){
 
     query = {
       text: 'INSERT INTO time_dt(id, date, att_time, leave_time, rest_time, product_code, work_content, work_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
