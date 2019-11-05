@@ -21,6 +21,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post( '/', async function(req, res ,next){
+  // if( req.session.login == null ){
+  //   res.redirect('http://localhost:3000/');
+  // }
   let i = 0
   let query = [];
   let p =req.body.project_code 
@@ -87,50 +90,73 @@ if(O < I){
   console.log('total2: ' + total)
   // ここまでが労働時間の計算
 
-  // 工数ごとの開始時間と狩猟時間の算出
+  let LT = req.body.leave_time;
+  let AT = req.body.att_time;
+  let LT_split = [];
+  let AT_split = [];
 
-  
-  let LT = req.body.leave_time
-  let AT = req.body.att_time
   let Ltime = [];
   let totaltime = [];
-  let timesum = 0;
+  let timesum ;
+  let Atime = [];
+  let hikaku_hour = 0;
+  let hikaku_min = 0;
+  let pp = req.body.leave_time; 
+
+  if(!Array.isArray(pp)){
+    pp = 1;
+    console.log("配列ではない")
+    console.log(pp)
+  } else {
+    pp = req.body.leave_time.length
+    console.log("配列だ")
+    console.log(pp)
+  }
 
   // 行ごとの作業時間を求めるまで繰り返す
-  for(let num = 0; num<LT.length;num++ ){
-  
+
+  for(let num = 0; num<pp;num++ ){
+  LT_split = LT[num].split(':');
+  AT_split = AT[num].split(':');
   // 行ごとの時間と分を各変数に格納
-  Ltime = LT[num].split(':');
-  Atime = AT[num].split(':');
+    Ltime[num] = new Date('','','',LT_split[0],LT_split[1]);
+    Atime[num] = new Date('','','',AT_split[0],AT_split[1]);
+    totaltime[num] = Ltime[num] - Atime[num];
+    
+    timesum = timesum + totaltime[num]
 
-  Ltime[num] = new Date('','','',Ltime[0],Ltime[1]);
-  Atime[num] = new Date('','','',Atime[0],Atime[1]);
-  totaltime[num] = Ltime[num] - Atime[num];
-  
-  timesum = timesum + totaltime[num]
-
-  for(hour = 0;totaltime[num] >= 1000*60*60;hour++){
-    totaltime[num] = totaltime[num] - 1000*60*60;
-  }
-  for(min = 0;totaltime[num] >= 1000*60;min++){
-    totaltime[num] = totaltime[num] - 1000*60;
-  }
-  totaltime[num] = hour + ':' + min;
-  }
+    // 勤務時間の計算
+    if(totaltime[num]>=1000*60){
+      for(hour = 0;totaltime[num] >= 1000*60*60;hour++){
+        totaltime[num] = totaltime[num] - 1000*60*60;
+      }
+      for(min = 0;totaltime[num] >= 1000*60;min++){
+        totaltime[num] = totaltime[num] - 1000*60;
+      }
+      totaltime[num] = hour + ':' + min;
+      hikaku_hour = hikaku_hour + hour;
+      hikaku_min = hikaku_min + min;
+    }
 
   //労働時間比較用変数 
-    // for(hour = 0;timesum >= 1000*60*60;hour++){
-    //   hour = timesum - 1000*60*60;
-    // }
-    // for(min = 0;timesum >= 1000*60;min++){
-    //   min = timesum - 1000*60;
-    // }
-    // timesum = hour + ':' + min;
+  for(hikaku_min;hikaku_min>60;hikaku_hour++){
+    hikaku_min = hikaku_min - 60;
+  }
 
-  console.log('Ltime: ' + Ltime);
-  console.log('Atime: ' + Atime);
-  console.log('totaltime: ' + totaltime);
-  console.log('timesum: ' + timesum)
+    console.log('Ltime: ' + Ltime[num]);
+    console.log('Atime: ' + Atime[num]);
+    console.log('totaltime: ' + totaltime[num]);
+  }
+
+  timesum = hikaku_hour + ':' + hikaku_min
+  console.log('timesum: ' + timesum);
+
+  // ちゃんと書けているかの判断
+  if(total == timesum){
+    console.log("正しく記入されている")
+  } else {
+    console.log("記入内容に間違いが存在する")
+  }
 
   // 単一行と複数行の登録
   if(!Array.isArray(p)){
